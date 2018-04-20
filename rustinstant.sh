@@ -15,7 +15,7 @@
 set -eu
 
 function fn_run_rust() {
-	echo "fn main() { $* }" | rustc - && ./rust_out
+	echo "fn main() { $* }" | rustc - && ./rust_out && rm rust_out
 }
 
 if [ -p /dev/stdin ]; then
