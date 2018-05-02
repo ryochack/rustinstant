@@ -16,3 +16,5 @@ $ cat << EOF | rustinstant
 # => hello world
 ```
 
+## Flag
+- `-f` : enable rustfmt

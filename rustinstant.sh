@@ -11,17 +11,39 @@
 # > println!("hello world!");
 # > EOF
 # => hello world
+#
+# Flag:
+# -f : enable rustfmt
 
 set -eu
 
+do_rustfmt=0
+arg=""
+
 function fn_run_rust() {
-	echo "fn main() { $* }" | rustc - && ./rust_out && rm rust_out
+	exec_code="fn main() { $* }"
+	if [ $do_rustfmt -eq 1 ]; then
+		echo $exec_code | rustfmt | rustc - && ./rust_out && rm rust_out
+	else
+		echo $exec_code | rustc - && ./rust_out && rm rust_out
+	fi
 }
+
+if [ $# -gt 0 ]; then
+	if [ "$1" = "-f" ]; then
+		do_rustfmt=1
+		if [ $# -gt 1 ]; then
+			arg="$2"
+		fi
+	else
+		arg="$1"
+	fi
+fi
 
 if [ -p /dev/stdin ]; then
 	code=$(cat -)
 elif [ $# -gt 0 ]; then
-	code=$1
+	code=$arg
 else
 	echo "rustinstant failed"
 	exit 1
