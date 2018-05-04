@@ -23,10 +23,10 @@ arg=""
 function fn_run_rust() {
 	exec_code="fn main() { $* }"
 	if [ $do_rustfmt -eq 1 ]; then
-		echo $exec_code | rustfmt | rustc - && ./rust_out && rm rust_out
+		echo $exec_code | rustfmt
 	else
-		echo $exec_code | rustc - && ./rust_out && rm rust_out
-	fi
+		echo $exec_code
+	fi | rustc - && ./rust_out && rm rust_out
 }
 
 if [ $# -gt 0 ]; then
